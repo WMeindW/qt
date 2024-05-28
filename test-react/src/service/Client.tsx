@@ -20,7 +20,7 @@ export class Client {
         try {
             const response = await axios({
                 method: 'post',
-                url: Config.requestRoute + "/save",
+                url: Config.requestRoute + "/create",
                 data: {
                     fields: fields
                 }

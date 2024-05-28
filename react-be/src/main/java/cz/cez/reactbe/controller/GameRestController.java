@@ -31,7 +31,9 @@ public class GameRestController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/save", produces = "text/plain")
-    public String save(@RequestBody String id) {
+    public String save(@RequestBody String body) {
+        System.out.println(body);
+        //{"isLead":true,"id":72839014,"fields":[{"type":2,"row":0,"column":0,"isActive":false,"isUnderConstruction":false,"enemy":null,"broken":false,"repairing":false},{"type":2,"row":0,"column":1,"isActive":false,"isUnderConstruction":false,"enemy":
         return "Ha";
     }
 
