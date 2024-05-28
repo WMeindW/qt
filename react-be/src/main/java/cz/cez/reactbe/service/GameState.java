@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class GameState {
-    private final List<GameField> lead;
-    private final List<GameField> secondary;
+    private List<GameField> lead;
+    private List<GameField> secondary;
     private String leadName;
     private String secondaryName;
     private boolean started;
@@ -19,12 +19,20 @@ public class GameState {
         this.started = started;
     }
 
-    public synchronized void addLead(GameField gameField) {
-        lead.add(gameField);
+    public synchronized void setLead(List<GameField> lead) {
+        this.lead = Collections.synchronizedList(lead);
     }
 
-    public synchronized void addSecondary(GameField gameField) {
-        secondary.add(gameField);
+    public List<GameField> getLead() {
+        return lead;
+    }
+
+    public List<GameField> getSecondary() {
+        return secondary;
+    }
+
+    public synchronized void setSecondary(List<GameField> secondary) {
+        this.secondary = Collections.synchronizedList(secondary);
     }
 
     public GameState(List<GameField> fields) {

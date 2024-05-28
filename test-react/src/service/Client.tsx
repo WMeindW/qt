@@ -16,11 +16,11 @@ interface FieldObject {
 export class Client {
     public static seconds: number = 0;
 
-    static async createGame(url: string, fields: FieldObject[]): Promise<string> {
+    static async createGame(fields: FieldObject[]): Promise<string> {
         try {
             const response = await axios({
                 method: 'post',
-                url: Config.requestRoute + url,
+                url: Config.requestRoute + "/save",
                 data: {
                     fields: fields
                 }
@@ -31,11 +31,11 @@ export class Client {
         }
     }
 
-    static async joinGame(url: string, name: string, isLead: boolean): Promise<string> {
+    static async joinGame(name: string, isLead: boolean): Promise<string> {
         try {
             const response = await axios({
                 method: 'get',
-                url: Config.requestRoute + url + "?name=" + name + "&isLead=" + isLead + "&id=" + Game.securityToken,
+                url: Config.requestRoute + "/join?name=" + name + "&isLead=" + isLead + "&id=" + Game.securityToken,
             });
             return response.data;  // Assuming you want to return the response data as a string
         } catch (err: any) {
@@ -52,6 +52,23 @@ export class Client {
             return response.data;  // Assuming you want to return the response data as a string
         } catch (err: any) {
             return err.message;  // Return the error message
+        }
+    }
+
+    static async save(fields: FieldObject[]): Promise<string> {
+        try {
+            const response = await axios({
+                method: 'post',
+                url: Config.requestRoute + "/save",
+                data: {
+                    isLead: Game.isLead,
+                    id: Game.securityToken,
+                    fields: fields
+                }
+            });
+            return response.data;  // Assuming you want to return the response data as a string
+        } catch (err: any) {
+            return "error";  // Return the error message
         }
     }
 

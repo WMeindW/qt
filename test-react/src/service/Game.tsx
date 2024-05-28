@@ -51,7 +51,7 @@ export class Game {
     static getRootElement(): ReactElement {
         let board: ReactElement<Field>[] = [];
         let objs = this.fieldObjects;
-        if (objs.length === 0)
+        if (objs.length === 0 && this.isLead)
             objs = this.generate();
         for (let i = 0; i < objs.length; i++) {
             let obj = objs[i];
@@ -92,6 +92,10 @@ export class Game {
                 gridTemplateRows: `repeat(${Config.rows}, 1fr)`
             }
         }, board);
+    }
+
+    static mergeIncoming(array: string) {
+        console.log(array);
     }
 
     static generate(): FieldObject[] {
@@ -205,11 +209,11 @@ export class Game {
 
     static async createGame() {
         this.isMultiplayer = true;
-        return this.securityToken = await Client.createGame("/create", Game.generate());
+        return this.securityToken = await Client.createGame(Game.generate());
     }
 
     static async joinGame() {
-        return await Client.joinGame("/join", this.playerName, this.isLead);
+        return await Client.joinGame(this.playerName, this.isLead);
     }
 
     private static generatePowerPlant(objs: FieldObject[]) {

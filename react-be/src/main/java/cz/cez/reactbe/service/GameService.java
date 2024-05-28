@@ -50,5 +50,16 @@ public class GameService {
         return states.get(id).isStarted();
     }
 
+    public synchronized List<GameField> save(List<GameField> fields, String id, boolean isLead) {
+
+        if (isLead) {
+            states.get(id).setLead(fields);
+            return states.get(id).getSecondary();
+        } else {
+            states.get(id).setSecondary(fields);
+            return states.get(id).getLead();
+        }
+    }
+
 
 }

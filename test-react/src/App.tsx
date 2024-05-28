@@ -14,6 +14,7 @@ export function App() {
 
     function startGame() {
         Game.isMultiplayer = false;
+        Game.isLead = true;
         setState(<Home></Home>);
     }
 
@@ -37,7 +38,10 @@ export function App() {
             console.log("joined");
             setState(<Loading></Loading>);
             console.log("started waiting");
-            Client.Start().then(() => setState(<Home></Home>))
+            Client.Start().then(() => Client.save(Game.getRootElementObject()).then(response => {
+                Game.mergeIncoming(response);
+                setState(<Home></Home>);
+            }));
         } else {
             setState(<Settings startGame={() => startGame()}
                                createGame={() => createGame()}

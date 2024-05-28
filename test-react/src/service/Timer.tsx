@@ -1,6 +1,7 @@
 import {Game} from "./Game";
 import {Config} from "./Config";
 import {Type} from "../components/home/Type";
+import {Client} from "./Client";
 
 interface FieldObject {
     type: Type,
@@ -64,24 +65,19 @@ export class Timer {
             }, 1000)).then(() => {
                 this.seconds += 0.5;
                 if (Number.isInteger(this.seconds))
-                    if (Game.isMultiplayer) {
-                        this.multiplayerCycle(setTime);
-                    } else
-                        this.cycle(setGrid, setTime);
+                    this.cycle(setGrid, setTime);
             });
         }
     }
 
-    private static multiplayerCycle(setTime: Function) {
-        setTime(this.seconds);
-    }
-
     private static cycle(setGrid: Function, setTime: Function) {
         let objs = Game.getRootElementObject();
-        if (this.seconds === Config.startTimeout) {
-            objs = Game.generateHome(Config.startHome);
-        } else if (this.seconds % Config.houseInterval === 0) {
-            objs = Game.generateHome(1);
+        if (Game.isLead) {
+            if (this.seconds === Config.startTimeout) {
+                objs = Game.generateHome(Config.startHome);
+            } else if (this.seconds % Config.houseInterval === 0) {
+                objs = Game.generateHome(1);
+            }
         }
         for (let i = 0; i < this.workersTime.length; i++) {
             this.workersTime[i]--;
@@ -117,6 +113,8 @@ export class Timer {
         setTime(this.seconds);
         this.setWorkers(Game.generateWorkers(this.workersTime));
         setGrid(Game.getRootElement());
+        if (Game.isMultiplayer)
+            Client.save(Game.getRootElementObject()).then(response => Game.mergeIncoming(response));
     }
 
     private static updateScore(objs: FieldObject[]) {

@@ -29,5 +29,11 @@ public class GameRestController {
         return service.started(id).toString();
     }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping(value = "/save", produces = "text/plain")
+    public String save(@RequestBody String id) {
+        return "Ha";
+    }
+
 
 }
