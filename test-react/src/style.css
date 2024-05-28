@@ -1,0 +1,241 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#root {
+    width: 100vw;
+    height: 100vh;
+    background-color: #19173A;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #19173AFF;
+}
+
+.main-grid {
+    margin: 0 auto auto;
+    width: 95%;
+    height: 90%;
+    background: rgb(25, 23, 58);
+    background: linear-gradient(307deg, rgba(25, 23, 58, 1) 14%, rgba(194, 84, 85, 1) 100%);
+    border-radius: 5px;
+    display: grid;
+    gap: 5px;
+    padding: 0;
+    border: 1px solid #19173A;
+}
+
+.field {
+    background-color: #19173AFF;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #135D66;
+}
+
+.powerplant {
+    background-color: #FDB61CFF;
+    cursor: auto;
+}
+
+.house {
+    cursor: auto;
+}
+
+.powerline-on {
+    background-color: #FDB61CFF;
+    cursor: auto;
+}
+
+.powerline-off {
+    background-color: #c25455;
+    cursor: auto;
+}
+
+.powerline-construction {
+    border: 1px solid #c25455;
+    background-color: #19173A;
+    color: #c25455;
+}
+
+.light {
+    box-shadow: 3px 3px 0 #FDB61CFF;
+}
+
+header {
+    width: 95%;
+    height: 5%;
+    background: rgb(25, 23, 58);
+    background: linear-gradient(307deg, rgba(25, 23, 58, 1) 14%, rgba(194, 84, 85, 1) 100%);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: large;
+    color: #19173AFF;
+    border: 1px solid #135D66;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4em;
+    height: 100%;
+    padding-left: 10px;
+}
+
+.game-finish {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: #19173AFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-finish-text {
+    position: absolute;
+    height: 30vh;
+    width: 30vw;
+    background: rgb(253, 182, 28);
+    background: linear-gradient(119deg, rgba(253, 182, 28, 1) 14%, rgb(194, 84, 85) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: xx-large;
+    border-radius: 25px;
+}
+
+.broken {
+    background-color: #19173AFF;
+    border: 1px solid #c25455 !important;
+    color: #FDB61CFF;
+    cursor: pointer;
+}
+
+.repairing {
+    color: #c25455;
+    cursor: auto;
+}
+
+.header-workers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    height: 100%;
+    margin-left: 5px;
+}
+
+.worker {
+    background-color: #19173A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+    width: 2em;
+    border-radius: 5px;
+    color: #c25455;
+}
+
+.enemy {
+
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 30vh;
+    width: 30vw;
+    background: rgb(253, 182, 28);
+    background: linear-gradient(119deg, rgba(253, 182, 28, 1) 14%, rgb(194, 84, 85) 100%);
+    border-radius: 25px;
+    gap: 10px;
+}
+
+.menu-button {
+    width: 30%;
+    height: 15%;
+    border-radius: 25px;
+    background: rgb(25, 23, 58);
+    background: linear-gradient(307deg, rgba(25, 23, 58, 1) 14%, rgba(194, 84, 85, 1) 100%);
+    color: white;
+    border: 1px solid #c25455;
+}
+
+.menu-button:hover {
+    color: #c25455;
+    cursor: pointer;
+}
+
+.menu-input {
+    width: 100%;
+    height: 15%;
+    border: 1px solid #c25455;
+    border-radius: 25px;
+    padding: 0;
+    background: linear-gradient(307deg, rgba(25, 23, 58, 1) 14%, rgba(194, 84, 85, 1) 100%);
+    color: #c25455;
+    text-align: center;
+}
+
+.menu-input:focus {
+    background: white;
+    outline: none;
+}
+
+.menu-input::placeholder {
+    color: white;
+}
+
+.menu-submit {
+    width: 100%;
+    height: 15%;
+    border-radius: 25px;
+    background: rgb(25, 23, 58);
+    background: linear-gradient(307deg, rgba(25, 23, 58, 1) 14%, rgba(194, 84, 85, 1) 100%);
+    color: white;
+    border: 1px solid #c25455;
+}
+
+.menu-submit:hover {
+    color: #c25455;
+    cursor: pointer;
+}
+
+form {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px
+}
+
+
+.loading-icon {
+    width: 5em;
+    height: 5em;
+    color: #c25455;
+}
