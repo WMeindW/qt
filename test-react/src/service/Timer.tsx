@@ -164,7 +164,8 @@ export class Timer {
         }
         const plant = objs.find(obj => obj.type === Type.Powerplant);
         if (!plant) {
-            throw new Error("No always active object found.");
+            console.log("No always active/Powerplant");
+            return;
         }
         dfs(plant, visited);
         return visited;
