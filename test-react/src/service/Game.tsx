@@ -139,6 +139,10 @@ export class Game {
                 }
                 let obj = objs[i];
                 obj.enemy = line;
+                /*if (line.broken && !line.repairing && obj.type === Type.Powerline) {
+                    obj.broken = true;
+                    obj.isActive = false;
+                }*/
                 merged.push(obj);
             } else {
                 if (objs[i] !== undefined) {
