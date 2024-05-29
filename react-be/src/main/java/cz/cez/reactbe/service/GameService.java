@@ -26,7 +26,7 @@ public class GameService {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
-            return mapper.readValue(input.substring(10, input.length() - 1), new TypeReference<>() {
+            return mapper.readValue(input, new TypeReference<>() {
             });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -46,20 +46,38 @@ public class GameService {
         return true;
     }
 
-    public synchronized Boolean started(String id) {
-        return states.get(id).isStarted();
+    public synchronized String started(String id) {
+        return states.get(id).isStarted() + "," + states.get(id).getSecondaryName() + "," + states.get(id).getLeadName();
     }
 
-    public synchronized List<GameField> save(List<GameField> fields, String id, boolean isLead) {
+    public synchronized String score(String id, boolean isLead) {
 
+        GameState state = states.get(id);
+
+        if (state.getLeadScore().equals("0")) {
+            state.setLeadScore("lost");
+            state.setSecondaryScore("won");
+        }
+        if (state.getSecondaryScore().equals("0")) {
+            state.setSecondaryScore("lost");
+            state.setSecondaryScore("won");
+        }
+        return isLead ? state.getSecondaryScore() : state.getLeadScore();
+    }
+
+    public synchronized List<GameField> save(List<GameField> fields, String id, boolean isLead, String score) {
         if (isLead) {
+            if (fields.isEmpty()) return states.get(id).getSecondary();
             states.get(id).setLead(fields);
+            states.get(id).setLeadScore(score);
             return states.get(id).getSecondary();
         } else {
+            if (fields.isEmpty()) return states.get(id).getLead();
             states.get(id).setSecondary(fields);
+            states.get(id).setSecondaryScore(score);
             return states.get(id).getLead();
         }
     }
 
-
 }
+

@@ -21,7 +21,7 @@ interface TimeStamps {
 export class Timer {
     private static running: boolean;
     public static seconds: number = 0;
-    private static score: number = Config.startScore;
+    public static score: number = Config.startScore;
     private static buildingPowerLines: TimeStamps[] = [];
     private static repairingPowerLines: TimeStamps[] = [];
     private static setWorkers: Function;
@@ -54,7 +54,7 @@ export class Timer {
         this.workers--;
     }
 
-    static async Start(setGrid: Function, setTime: Function, setWorkers: Function, setScore: Function
+    static async Start(setGrid: Function, setTime: Function, setWorkers: Function, setScore: Function, setEnemyScore: Function
     ) {
         this.running = true;
         this.setWorkers = setWorkers;
@@ -62,16 +62,31 @@ export class Timer {
         while (this.running) {
             await new Promise<void>((resolve) => setTimeout(() => {
                 resolve();
-            }, 1000)).then(() => {
-                this.seconds += 0.5;
-                if (Number.isInteger(this.seconds))
-                    this.cycle(setGrid, setTime);
+            }, 500)).then(() => {
+                this.seconds += 0.25;
+                if (this.seconds % 0.5 === 0)
+                    this.cycle(setGrid, setTime, setEnemyScore);
             });
         }
     }
 
-    private static cycle(setGrid: Function, setTime: Function) {
+    private static cycle(setGrid: Function, setTime: Function, setEnemyScore: Function) {
         let objs = Game.getRootElementObject();
+        if (Game.isMultiplayer)
+            Client.getScore().then(response => {
+                if (response.toString() === "lost") {
+                    setGrid(Game.finishGame("Game lost!"));
+                } else if (response.toString() === "won") {
+                    setGrid(Game.finishGame("Game won!"));
+                } else {
+                    setEnemyScore(response);
+                    return;
+                }
+                this.Stop();
+            });
+        if (Game.isMultiplayer) {
+            Client.save(Game.getRootElementObject()).then(response => Game.mergeIncoming(response));
+        }
         if (Game.isLead) {
             if (this.seconds === Config.startTimeout) {
                 objs = Game.generateHome(Config.startHome);
@@ -79,9 +94,10 @@ export class Timer {
                 objs = Game.generateHome(1);
             }
         }
-        for (let i = 0; i < this.workersTime.length; i++) {
-            this.workersTime[i]--;
-        }
+        if (Number.isInteger(this.seconds))
+            for (let i = 0; i < this.workersTime.length; i++) {
+                this.workersTime[i]--;
+            }
         this.workersTime = this.workersTime.filter(item => item > 0);
         for (let i = 0; i < this.buildingPowerLines.length; i++) {
             let lineO = this.buildingPowerLines[i];
@@ -104,17 +120,14 @@ export class Timer {
                 this.workers++;
             }
         }
-
         if (!this.running) return;
-        Game.setRootElementObject(objs);
         this.updatePowerLine(objs);
         this.updateScore(objs);
         if (this.seconds % Config.breakInterval === 0) this.breakPowerline(objs);
-        setTime(this.seconds);
+        if (Number.isInteger(this.seconds))
+            setTime(this.seconds);
         this.setWorkers(Game.generateWorkers(this.workersTime));
         setGrid(Game.getRootElement());
-        if (Game.isMultiplayer)
-            Client.save(Game.getRootElementObject()).then(response => Game.mergeIncoming(response));
     }
 
     private static updateScore(objs: FieldObject[]) {

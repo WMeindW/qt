@@ -1,6 +1,5 @@
 package cz.cez.reactbe.service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,9 +9,28 @@ public class GameState {
     private String leadName;
     private String secondaryName;
     private boolean started;
+    private String leadScore;
+    private String secondaryScore;
+
 
     public boolean isStarted() {
         return started;
+    }
+
+    public String getLeadScore() {
+        return leadScore;
+    }
+
+    public void setLeadScore(String leadScore) {
+        this.leadScore = leadScore;
+    }
+
+    public String getSecondaryScore() {
+        return secondaryScore;
+    }
+
+    public void setSecondaryScore(String secondaryScore) {
+        this.secondaryScore = secondaryScore;
     }
 
     public void setStarted(boolean started) {
@@ -38,11 +56,6 @@ public class GameState {
     public GameState(List<GameField> fields) {
         lead = Collections.synchronizedList(fields);
         secondary = Collections.synchronizedList(fields);
-    }
-
-    public GameState() {
-        lead = Collections.synchronizedList(new ArrayList<>());
-        secondary = Collections.synchronizedList(new ArrayList<>());
     }
 
     public String getLeadName() {

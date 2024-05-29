@@ -38,10 +38,13 @@ export function App() {
             console.log("joined");
             setState(<Loading></Loading>);
             console.log("started waiting");
+
             Client.Start().then(() => Client.save(Game.getRootElementObject()).then(response => {
                 Game.mergeIncoming(response);
                 setState(<Home></Home>);
             }));
+
+
         } else {
             setState(<Settings startGame={() => startGame()}
                                createGame={() => createGame()}

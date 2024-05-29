@@ -11,7 +11,7 @@ export class Config {
     static readonly scoreDownNumber: number = 2;
     static readonly scoreUpInterval: number = 20;
     static readonly scoreUpNumber: number = 1;
-    static readonly breakInterval: number = 10;
+    static readonly breakInterval: number = 40;
     static readonly repairTime: number = 15;
     static readonly requestRoute: string = "http://localhost:8080";
 }

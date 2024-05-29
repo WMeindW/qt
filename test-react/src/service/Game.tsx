@@ -29,6 +29,7 @@ export class Game {
     public static isMultiplayer: boolean;
     public static isLead: boolean;
     public static started: boolean;
+    public static enemyPlayerName: string;
 
     static setName(name: string | null): void {
         if (name == null || name.includes(" ") || name.length > 6) return;
@@ -55,6 +56,7 @@ export class Game {
             objs = this.generate();
         for (let i = 0; i < objs.length; i++) {
             let obj = objs[i];
+
             if (obj.type === Type.House) {
                 let element: ReactElement<House> = <House column={obj.column} key={i} row={obj.row}
                                                           isActive={obj.isActive}
@@ -94,8 +96,70 @@ export class Game {
         }, board);
     }
 
-    static mergeIncoming(array: string) {
-        console.log(array);
+    static mergeIncoming(array: FieldObject[]) {
+        let objs = this.fieldObjects;
+        let merged: FieldObject[] = [];
+        for (let i = 0; i < array.length; i++) {
+            let a = array[i];
+            // @ts-ignore
+            if (a.type == "POWERPLANT") {
+                merged.push({
+                    type: Type.Powerplant,
+                    row: a.row,
+                    column: a.column,
+                    isActive: true,
+                    isUnderConstruction: false,
+                    enemy: null,
+                    broken: false,
+                    repairing: false,
+                });
+                // @ts-ignore
+            } else if (a.type == "HOUSE") {
+                merged.push({
+                    type: Type.House,
+                    row: a.row,
+                    column: a.column,
+                    isActive: a.isActive,
+                    isUnderConstruction: false,
+                    enemy: null,
+                    broken: false,
+                    repairing: false,
+                });
+                // @ts-ignore
+            } else if (a.type == "POWERLINE") {
+                let line: FieldObject = {
+                    type: Type.Powerline,
+                    row: a.row,
+                    column: a.column,
+                    isActive: a.isActive,
+                    isUnderConstruction: a.isUnderConstruction,
+                    enemy: null,
+                    broken: a.broken,
+                    repairing: a.repairing,
+                }
+                let obj = objs[i];
+                obj.enemy = line;
+                merged.push(obj);
+            } else {
+                if (objs[i] !== undefined) {
+                    merged.push(objs[i]);
+                } else {
+                    merged.push({
+                        type: Type.Empty,
+                        row: a.row,
+                        column: a.column,
+                        isActive: a.isActive,
+                        isUnderConstruction: false,
+                        enemy: null,
+                        broken: false,
+                        repairing: false,
+                    });
+                }
+
+            }
+
+        }
+        return this.fieldObjects = merged;
     }
 
     static generate(): FieldObject[] {
@@ -213,6 +277,7 @@ export class Game {
     }
 
     static async joinGame() {
+        this.isMultiplayer = true;
         return await Client.joinGame(this.playerName, this.isLead);
     }
 

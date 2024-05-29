@@ -1,6 +1,8 @@
 import {Field} from "./Field";
 import {Type} from "./Type";
 import {Game} from "../../service/Game";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTowerCell} from "@fortawesome/free-solid-svg-icons";
 
 interface State {
     isActive: boolean;
@@ -49,9 +51,18 @@ export class Empty extends Field {
 
     render() {
         const className = this.state.isActive ? "light" : ""
+        let icon = null;
+        let classEnemy = "";
+        if (this.props.enemy != null) {
+            classEnemy = " enemy "
+            icon = <FontAwesomeIcon className="enemy-line" icon={faTowerCell}/>
+        }
+
         return <div onClick={() => Game.buildPowerLine(this.props.row, this.props.column)}
                     onMouseEnter={this.toggleActive}
                     onMouseLeave={this.toggleActive}
-                    className={"field " + className}></div>;
+                    className={"field " + className + classEnemy}>
+            {icon}
+        </div>;
     }
 }
