@@ -133,12 +133,11 @@ export class Timer {
     private static updateScore(objs: FieldObject[]) {
         let houses = objs.filter(o => o.type === Type.House);
         let activeHouses = houses.filter(o => o.isActive).length;
-        if (this.seconds % Config.scoreDownInterval === 0) {
+        if ((this.seconds + 8) % Config.scoreDownInterval === 0) {
             this.score -= Config.scoreDownNumber * (houses.length - activeHouses);
         }
-        if (this.seconds % Config.scoreUpInterval === 0) {
+        if ((this.seconds + 8) % Config.scoreUpInterval === 0) {
             this.score += Config.scoreUpNumber * activeHouses;
-            console.log(Config.scoreUpNumber * activeHouses)
         }
         if (this.score < 0)
             this.score = 0;

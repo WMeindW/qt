@@ -16,7 +16,7 @@ interface FieldObject {
 }
 
 export class Client {
-    public static seconds: number = 0;
+    public static index: number = 0;
 
     static async createGame(fields: FieldObject[]): Promise<string> {
         try {
@@ -95,11 +95,10 @@ export class Client {
         while (!Game.started) {
             await new Promise<void>((resolve) => setTimeout(() => {
                 resolve();
-            }, 1000)).then(() => {
-                this.seconds += 0.5;
-                if (Number.isInteger(this.seconds))
+            }, 250)).then(() => {
+                this.index += 1;
+                if (this.index % 2 === 0)
                     this.hasStarted().then((response) => {
-                        console.log(response);
                         if (response.toString().includes("true")) {
                             if (Game.isLead) {
                                 Game.enemyPlayerName = response.toString().split(",")[1];

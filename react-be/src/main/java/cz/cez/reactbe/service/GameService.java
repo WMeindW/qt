@@ -53,14 +53,17 @@ public class GameService {
     public synchronized String score(String id, boolean isLead) {
 
         GameState state = states.get(id);
-
-        if (state.getLeadScore().equals("0")) {
-            state.setLeadScore("lost");
-            state.setSecondaryScore("won");
-        }
-        if (state.getSecondaryScore().equals("0")) {
-            state.setSecondaryScore("lost");
-            state.setSecondaryScore("won");
+        if (state.getSecondaryScore() != null && state.getLeadScore() != null) {
+            if (state.getLeadScore().equals("0") && state.getLeadScore().equals("0")) {
+                state.setLeadScore("lost");
+                state.setSecondaryScore("lost");
+            } else if (state.getLeadScore().equals("0")) {
+                state.setLeadScore("won");
+                state.setSecondaryScore("lost");
+            } else if (state.getSecondaryScore().equals("0")) {
+                state.setSecondaryScore("won");
+                state.setSecondaryScore("lost");
+            }
         }
         return isLead ? state.getSecondaryScore() : state.getLeadScore();
     }

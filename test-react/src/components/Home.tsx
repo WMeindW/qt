@@ -29,8 +29,18 @@ export default function Home() {
                 Timer.Stop();
                 setGrid(Game.finishGame("Game lost!"));
             }
+        } else {
+            if (minutes >= 5) {
+                Timer.Stop();
+                if (score > Number(enemyScore)) {
+                    setGrid(Game.finishGame("Game won!"));
+                } else if (score < Number(enemyScore)) {
+                    setGrid(Game.finishGame("Game lost!"));
+                } else {
+                    setGrid(Game.finishGame("Draw!"));
+                }
+            }
         }
-
     }, [seconds]);
 
     useEffect(() => {
