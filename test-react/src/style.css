@@ -165,6 +165,7 @@ header {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    min-width: 15em;
     height: 30vh;
     width: 30vw;
     background: rgb(253, 182, 28);
