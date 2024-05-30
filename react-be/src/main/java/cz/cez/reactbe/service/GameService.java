@@ -54,7 +54,7 @@ public class GameService {
 
         GameState state = states.get(id);
         if (state.getSecondaryScore() != null && state.getLeadScore() != null) {
-            if (state.getLeadScore().equals("0") && state.getLeadScore().equals("0")) {
+            if (state.getLeadScore().equals("0") && state.getSecondaryScore().equals("0")) {
                 state.setLeadScore("lost");
                 state.setSecondaryScore("lost");
             } else if (state.getLeadScore().equals("0")) {
@@ -62,7 +62,7 @@ public class GameService {
                 state.setSecondaryScore("lost");
             } else if (state.getSecondaryScore().equals("0")) {
                 state.setSecondaryScore("won");
-                state.setSecondaryScore("lost");
+                state.setLeadScore("lost");
             }
         }
         return isLead ? state.getSecondaryScore() : state.getLeadScore();

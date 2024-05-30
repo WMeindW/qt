@@ -12,16 +12,17 @@ export function CreateGameMenu(props: Props) {
         setGameId(response)
     )
     return <div className="menu">
-        <button onClick={() => {
-            navigator.clipboard.writeText(gameId)
-        }} className="menu-button">{gameId}</button>
         <form onSubmit={(e) => {
             e.preventDefault();
             props.join();
-        }}
-        ><input placeholder="Username"
-                onChange={(e) => Game.setName(e.target.value)}
-                className="menu-input" type={"text"} required={true}/>
+        }}>
+            <button onClick={(e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText(gameId)
+            }} className="menu-button">{gameId}</button>
+            <input placeholder="Username"
+                   onChange={(e) => Game.setName(e.target.value)}
+                   className="menu-input" type={"text"} required={true}/>
             <button className="menu-submit">Submit</button>
         </form>
     </div>

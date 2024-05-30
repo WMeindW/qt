@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.cez.reactbe.service.GameField;
 import cz.cez.reactbe.service.GameService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,9 @@ public class GameRestController {
 
     @Autowired
     GameService service;
+
+    private static final Log log = LogFactory.getLog(GameRestController.class);
+
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/create", produces = "text/plain")

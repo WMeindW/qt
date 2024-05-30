@@ -1,13 +1,10 @@
 import {Game} from "../service/Game";
-import {ReactElement, useState} from "react";
 
 interface Props {
     join: Function;
-    statusElement: ReactElement
 }
 
 export function JoinGameMenu(props: Props) {
-    const [status, setStatus] = useState(props.statusElement);
     return <div className="menu">
         <form onSubmit={(e) => {
             e.preventDefault();
@@ -22,6 +19,5 @@ export function JoinGameMenu(props: Props) {
                    className="menu-input" type={"text"} required={true}/>
             <button className="menu-submit">Submit</button>
         </form>
-        {status}
     </div>
 }

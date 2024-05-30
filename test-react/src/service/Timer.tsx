@@ -28,9 +28,25 @@ export class Timer {
     private static setScore: Function;
     public static workersTime: number[] = [];
     public static workers = Config.startWorkers;
+    private static houses: TimeStamps[] = []
 
     static Stop(): void {
         this.running = false;
+    }
+
+    static toggleHouse(obj: FieldObject) {
+        let house = this.houses.find(o => o.line.row === obj.row && o.line.column === obj.column);
+        if (house === undefined) {
+            this.houses.push({
+                seconds: Math.round(this.seconds),
+                line: obj
+            });
+        } else {
+            if (house.line.isActive !== obj.isActive) {
+                house.line = obj;
+                house.seconds = Math.round(this.seconds);
+            }
+        }
     }
 
     static startBuildingPowerLine(obj: FieldObject) {
@@ -74,6 +90,7 @@ export class Timer {
         let objs = Game.getRootElementObject();
         if (Game.isMultiplayer)
             Client.getScore().then(response => {
+                console.log(response);
                 if (response.toString() === "lost") {
                     setGrid(Game.finishGame("Game lost!"));
                 } else if (response.toString() === "won") {
@@ -122,16 +139,35 @@ export class Timer {
         }
         if (!this.running) return;
         this.updatePowerLine(objs);
-        this.updateScore(objs);
+        if (Number.isInteger(this.seconds))
+            this.updateScore();
         if (this.seconds % Config.breakInterval === 0) this.breakPowerline(objs);
         if (Number.isInteger(this.seconds))
             setTime(this.seconds);
-        this.setWorkers(Game.generateWorkers(this.workersTime));
         setGrid(Game.getRootElement());
+        this.setWorkers(Game.generateWorkers(this.workersTime));
     }
 
-    private static updateScore(objs: FieldObject[]) {
-        let houses = objs.filter(o => o.type === Type.House);
+    private static updateScore() {
+        for (const house of this.houses) {
+            if (house.line.isActive) {
+                if ((Math.round(this.seconds) - house.seconds) % Config.scoreUpInterval === 0) {
+                    this.score += Config.scoreUpNumber;
+                    console.log(Config.scoreUpNumber)
+                }
+            } else {
+                if ((Math.round(this.seconds) - house.seconds) % Config.scoreDownInterval === 0) {
+                    this.score -= Config.scoreDownNumber;
+                    console.log(-Config.scoreDownNumber)
+                }
+            }
+        }
+        if (this.score < 0)
+            this.score = 0;
+        else if (this.score > 100)
+            this.score = 100;
+        this.setScore(this.score);
+        /*let houses = objs.filter(o => o.type === Type.House);
         let activeHouses = houses.filter(o => o.isActive).length;
         if ((this.seconds + 8) % Config.scoreDownInterval === 0) {
             this.score -= Config.scoreDownNumber * (houses.length - activeHouses);
@@ -143,7 +179,7 @@ export class Timer {
             this.score = 0;
         else if (this.score > 100)
             this.score = 100;
-        this.setScore(this.score);
+        this.setScore(this.score);*/
     }
 
     private static updatePowerLine(objs: FieldObject[]) {

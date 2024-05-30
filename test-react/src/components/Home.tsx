@@ -22,7 +22,7 @@ export default function Home() {
         setTime("0" + minutes.toString() + ":" + sec);
 
         if (!Game.isMultiplayer) {
-            if (minutes >= 5) {
+            if (minutes >= Config.finishMinutes) {
                 Timer.Stop();
                 setGrid(Game.finishGame("Game won!"));
             } else if (score === 0) {
@@ -30,7 +30,7 @@ export default function Home() {
                 setGrid(Game.finishGame("Game lost!"));
             }
         } else {
-            if (minutes >= 5) {
+            if (minutes >= Config.finishMinutes) {
                 Timer.Stop();
                 if (score > Number(enemyScore)) {
                     setGrid(Game.finishGame("Game won!"));
@@ -41,7 +41,7 @@ export default function Home() {
                 }
             }
         }
-    }, [seconds]);
+    }, [enemyScore, score, seconds]);
 
     useEffect(() => {
         Timer.Start(setGrid, setSeconds, setWorkers, setScore, setEnemyScore);
@@ -56,12 +56,12 @@ export default function Home() {
 
     return <main>
         <header>
-            <div className="header-info"><FontAwesomeIcon style={{marginRight: "5px", height: "18px"}}
-                                                          icon={faHourglass}/> {time}</div>
-            <div id={"score"} className="header-info">CX: {score}</div>
+            <h4 className="header-info"><FontAwesomeIcon style={{marginRight: "5px", height: "18px"}}
+                                                          icon={faHourglass}/> {time}</h4>
+            <h4 id={"score"} className="header-info">CX: {score}</h4>
             <div className="header-info">{workers}</div>
-            <div className="header-name">{name}</div>
-            <div className="header-score">{enemyScore}</div>
+            <h4 className="header-name">{name}</h4>
+            <h4 className="header-score">{enemyScore}</h4>
         </header>
         {grid}
     </main>

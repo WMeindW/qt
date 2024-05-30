@@ -25,7 +25,7 @@ export function App() {
 
     function joinGameMenu() {
         Game.isLead = false;
-        setState(<JoinGameMenu join={() => joinGame()} statusElement={<div></div>}></JoinGameMenu>);
+        setState(<JoinGameMenu join={() => joinGame()}></JoinGameMenu>);
     }
 
     function joinGame() {

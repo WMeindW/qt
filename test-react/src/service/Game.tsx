@@ -102,7 +102,7 @@ export class Game {
         for (let i = 0; i < array.length; i++) {
             let a = array[i];
             // @ts-ignore
-            if (a.type == "POWERPLANT") {
+            if (a.type === "POWERPLANT") {
                 merged.push({
                     type: Type.Powerplant,
                     row: a.row,
@@ -114,7 +114,7 @@ export class Game {
                     repairing: false,
                 });
                 // @ts-ignore
-            } else if (a.type == "HOUSE") {
+            } else if (a.type === "HOUSE") {
                 merged.push({
                     type: Type.House,
                     row: a.row,
@@ -126,7 +126,7 @@ export class Game {
                     repairing: false,
                 });
                 // @ts-ignore
-            } else if (a.type == "POWERLINE") {
+            } else if (a.type === "POWERLINE") {
                 let line: FieldObject = {
                     type: Type.Powerline,
                     row: a.row,
@@ -152,7 +152,7 @@ export class Game {
                         type: Type.Empty,
                         row: a.row,
                         column: a.column,
-                        isActive: a.isActive,
+                        isActive: false,
                         isUnderConstruction: false,
                         enemy: null,
                         broken: false,
@@ -255,11 +255,28 @@ export class Game {
         Timer.fixPowerLine(line);
     }
 
+    static houseActive(obj: Field) {
+        Timer.toggleHouse({
+            type: Type.House,
+            row: obj.props.row,
+            column: obj.props.column,
+            isActive: obj.props.isActive,
+            isUnderConstruction: false,
+            enemy: null,
+            broken: false,
+        });
+    }
+
     static finishGame(text: string) {
-        let finishText = <div className={"game-finish-text"}>{text}</div>
+        let finishText = <h5 key={1} className={"game-finish-text"}>{text}</h5>
+        let score = <div key={2}></div>
+        if (Timer.score > 0)
+            score = <h6 className={"game-finish-text-score"}
+                        key={2}>{"CX: " + Timer.score + "/" + Config.startScore}</h6>;
+        console.log(score);
         return React.createElement("div", {
             className: "game-finish",
-            children: finishText
+            children: [finishText, score]
         });
     }
 
@@ -267,10 +284,10 @@ export class Game {
         let workers: ReactElement[] = [];
         let time = workersTime.sort((a, b) => b - a);
         for (let i = 0; i < Config.startWorkers - time.length; i++) {
-            workers.push(<div className="worker"><FontAwesomeIcon icon={faScrewdriverWrench}/></div>)
+            workers.push(<div key={i} className="worker"><FontAwesomeIcon icon={faScrewdriverWrench}/></div>)
         }
         for (let i = 0; i < workersTime.length; i++) {
-            workers.push(<div className="worker worker-off">{workersTime[i]}</div>);
+            workers.push(<div key={i + workers.length} className="worker worker-off">{workersTime[i]}</div>);
         }
         return React.createElement("div", {className: "header-workers"}, workers)
     }
