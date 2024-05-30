@@ -50,6 +50,9 @@ export class Timer {
     }
 
     static startBuildingPowerLine(obj: FieldObject) {
+        for (const line of this.buildingPowerLines) {
+            if (line.line.row === obj.row && line.line.column === obj.column) return;
+        }
         this.buildingPowerLines.push({
             seconds: Math.round(this.seconds),
             line: obj
