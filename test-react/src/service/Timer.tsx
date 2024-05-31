@@ -28,7 +28,8 @@ export class Timer {
     private static setScore: Function;
     public static workersTime: number[] = [];
     public static workers = Config.startWorkers;
-    private static houses: TimeStamps[] = []
+    private static houses: TimeStamps[] = [];
+    private static breakTime: number = Config.breakInterval;
 
     static Stop(): void {
         this.running = false;
@@ -50,6 +51,9 @@ export class Timer {
     }
 
     static startBuildingPowerLine(obj: FieldObject) {
+        for (const line of this.buildingPowerLines) {
+            if (line.line.row === obj.row && line.line.column === obj.column) return;
+        }
         this.buildingPowerLines.push({
             seconds: Math.round(this.seconds),
             line: obj
@@ -60,7 +64,12 @@ export class Timer {
 
     static fixPowerLine(obj: FieldObject) {
         for (const line of this.repairingPowerLines) {
-            if (line.line.row === obj.row && line.line.column === obj.column) return;
+            if (line.line.row === obj.row && line.line.column === obj.column) {
+                line.seconds = Math.round(this.seconds);
+                this.workersTime.push(Config.repairTime);
+                this.workers--;
+                return;
+            }
         }
         this.repairingPowerLines.push({
             seconds: Math.round(this.seconds),
@@ -79,7 +88,7 @@ export class Timer {
             await new Promise<void>((resolve) => setTimeout(() => {
                 resolve();
             }, 500)).then(() => {
-                this.seconds += 0.25;
+                this.seconds += 0.5;
                 if (this.seconds % 0.5 === 0)
                     this.cycle(setGrid, setTime, setEnemyScore);
             });
@@ -88,6 +97,8 @@ export class Timer {
 
     private static cycle(setGrid: Function, setTime: Function, setEnemyScore: Function) {
         let objs = Game.getRootElementObject();
+        if (this.workers > Config.startWorkers)
+            this.workers = 5;
         if (Game.isMultiplayer)
             Client.getScore().then(response => {
                 console.log(response);
@@ -125,7 +136,6 @@ export class Timer {
                 this.workers++;
             }
         }
-
         for (let i = 0; i < this.repairingPowerLines.length; i++) {
             let lineO = this.repairingPowerLines[i];
             if (this.seconds - lineO.seconds === Config.repairTime) {
@@ -141,7 +151,7 @@ export class Timer {
         this.updatePowerLine(objs);
         if (Number.isInteger(this.seconds))
             this.updateScore();
-        if (this.seconds % Config.breakInterval === 0) this.breakPowerline(objs);
+        this.breakPowerline(objs);
         if (Number.isInteger(this.seconds))
             setTime(this.seconds);
         setGrid(Game.getRootElement());
@@ -153,19 +163,17 @@ export class Timer {
             if (house.line.isActive) {
                 if ((Math.round(this.seconds) - house.seconds) % Config.scoreUpInterval === 0) {
                     this.score += Config.scoreUpNumber;
-                    console.log(Config.scoreUpNumber)
                 }
             } else {
                 if ((Math.round(this.seconds) - house.seconds) % Config.scoreDownInterval === 0) {
                     this.score -= Config.scoreDownNumber;
-                    console.log(-Config.scoreDownNumber)
                 }
             }
         }
         if (this.score < 0)
             this.score = 0;
-        else if (this.score > 100)
-            this.score = 100;
+        else if (this.score > Config.startScore)
+            this.score = Config.startScore;
         this.setScore(this.score);
         /*let houses = objs.filter(o => o.type === Type.House);
         let activeHouses = houses.filter(o => o.isActive).length;
@@ -220,6 +228,8 @@ export class Timer {
     }
 
     private static breakPowerline(objs: FieldObject[]) {
+        if (!Number.isInteger(this.seconds)) return;
+        if (this.seconds !== this.breakTime) return;
         let lines = objs.filter(obj => obj.type === Type.Powerline && !obj.isUnderConstruction);
         if (lines.length === 0) return;
         let line = lines[Math.floor(Math.random() * (lines.length))];
@@ -228,6 +238,8 @@ export class Timer {
         if (line === undefined) return;
         line.broken = true;
         line.isActive = false;
+        this.breakTime = Config.breakInterval + this.seconds + Math.floor(Math.random() * (10) - 5);
+        console.log(this.breakTime);
     }
 
 

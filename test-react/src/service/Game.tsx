@@ -269,9 +269,7 @@ export class Game {
 
     static finishGame(text: string) {
         let finishText = <h5 key={1} className={"game-finish-text"}>{text}</h5>
-        let score = <div key={2}></div>
-        if (Timer.score > 0)
-            score = <h6 className={"game-finish-text-score"}
+        let score = <h6 className={"game-finish-text-score"}
                         key={2}>{"CX: " + Timer.score + "/" + Config.startScore}</h6>;
         console.log(score);
         return React.createElement("div", {
