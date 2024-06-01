@@ -81,7 +81,7 @@ export class Game {
                 board.push(element);
             } else {
                 let element: ReactElement<Empty> = <Empty column={obj.column} key={i}
-                                                          row={obj.row} isActive={obj.isActive}
+                                                          row={obj.row} isActive={false}
                                                           isUnderConstruction={obj.isUnderConstruction}
                                                           type={Type.Empty} enemy={obj.enemy} broken repairing></Empty>;
                 board.push(element);
