@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fight The Blackout - API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #c4c4c4;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        code {
+            background-color: #eaeaea;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: #eaeaea;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Fight The Blackout - API Documentation</h1>
+</header>
+<main>
+    <section id="introduction">
+        <h2>Introduction</h2>
+        <p>This document provides an overview of the API endpoints for the <strong>Fight The Blackout</strong> game,
+            developed by Daniel Linda during an internship at ČEZ. The API is used to manage game states, including
+            creating games, joining games, starting games, saving game states, and retrieving scores.</p>
+    </section>
+
+    <section id="endpoints">
+        <h2>API Endpoints</h2>
+
+        <section id="create-game">
+            <h3>Create Game</h3>
+            <p>Creates a new game with the specified fields.</p>
+            <pre><code>POST /create</code></pre>
+            <p><strong>Request Body:</strong></p>
+            <pre><code>{
+    "fields": "fieldData"
+}</code></pre>
+            <p><strong>Response:</strong> Plain text indicating the result of the game creation process.</p>
+        </section>
+
+        <section id="join-game">
+            <h3>Join Game</h3>
+            <p>Allows a player to join an existing game.</p>
+            <pre><code>GET /join</code></pre>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>name</code> (string) - The name of the player.</li>
+                <li><code>isLead</code> (boolean) - Indicates if the player is the leader.</li>
+                <li><code>id</code> (string) - The ID of the game to join.</li>
+            </ul>
+            <p><strong>Response:</strong> Plain text indicating the result of the join operation.</p>
+        </section>
+
+        <section id="started">
+            <h3>Check if Game Started</h3>
+            <p>Checks if a game has started.</p>
+            <pre><code>GET /started</code></pre>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>id</code> (string) - The ID of the game.</li>
+            </ul>
+            <p><strong>Response:</strong> Plain text indicating if the game has started.</p>
+        </section>
+
+        <section id="save-game">
+            <h3>Save Game</h3>
+            <p>Saves the current state of the game.</p>
+            <pre><code>POST /save</code></pre>
+            <p><strong>Request Body:</strong></p>
+            <pre><code>{
+    "score": "currentScore",
+    "isLead": true/false,
+    "id": "gameId",
+    "fields": "fieldData"
+}</code></pre>
+            <p><strong>Response:</strong> JSON array of game fields representing the saved state.</p>
+        </section>
+
+        <section id="get-score">
+            <h3>Get Score</h3>
+            <p>Retrieves the current score of the game.</p>
+            <pre><code>GET /score</code></pre>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>id</code> (string) - The ID of the game.</li>
+                <li><code>isLead</code> (boolean) - Indicates if the requester is the leader.</li>
+            </ul>
+            <p><strong>Response:</strong> Plain text representing the current score.</p>
+        </section>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Daniel Linda. All rights reserved.</p>
+</footer>
+</body>
+</html>
