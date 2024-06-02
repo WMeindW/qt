@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fight The Blackout - Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #c4c4c4;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            margin: 10px 0;
+        }
+        code {
+            background-color: #eaeaea;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Fight The Blackout - Documentation</h1>
+</header>
+<main>
+    <section id="introduction">
+        <h2>Introduction</h2>
+        <p><strong>Fight The Blackout</strong> is a web-based game developed by student Daniel Linda during an internship at ČEZ. The game challenges players to manage a power grid, keeping consumption points connected while dealing with faults and managing resources.</p>
+    </section>
+
+    <section id="config">
+        <h2>Configuration</h2>
+        <p>The game includes a configuration file (<code>config</code>) that contains important settings. These settings can be adjusted as needed to customize the game experience.</p>
+    </section>
+
+    <section id="game-modes">
+        <h2>Game Modes</h2>
+        <p>The game features two modes:</p>
+        <ul>
+            <li><strong>Multiplayer Mode:</strong> Allows two players to compete against each other.</li>
+            <li><strong>Singleplayer Mode:</strong> Designed for one player to play alone.</li>
+        </ul>
+    </section>
+
+    <section id="gameplay">
+        <h2>Gameplay</h2>
+        <p>The game consists of 600 basic tiles. At the start of the game, a power plant is randomly generated. After five seconds, two consumption points are generated.</p>
+        <p>The goal is to connect the consumption points to the power grid. Players have five workers to use for building new lines or repairing existing ones. Building and repairing is done by clicking on the tiles.</p>
+    </section>
+
+    <section id="game-mechanics">
+        <h2>Game Mechanics</h2>
+        <p>Every 60 seconds, a fault appears somewhere on the grid. Players must repair the fault by clicking on it.</p>
+        <p>The game ends if the score drops to zero or if the player survives for five minutes.</p>
+        <p>Score calculation:</p>
+        <ul>
+            <li>+1 point every 20 seconds for each connected consumption point.</li>
+            <li>-2 points every 10 seconds for each unconnected consumption point.</li>
+        </ul>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Fight The Blackout. All rights reserved.</p>
+</footer>
+</body>
+</html>
