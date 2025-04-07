@@ -14,5 +14,5 @@ export class Config {
     static readonly breakInterval: number = 60;
     static readonly repairTime: number = 10;
     static readonly finishMinutes: number = 5;
-    static readonly requestRoute: string = "http://localhost:8080";
+    static readonly requestRoute: string = "/cez/api";
 }
